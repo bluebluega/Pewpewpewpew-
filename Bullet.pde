@@ -1,11 +1,19 @@
 class Bullet extends Gameobject {
   
-  Bullet() {
-    super(myplayer.x, myplayer.y, 5, 1, yellow);
+  Bullet(float x, float y, float size, float hp, color c) {
+    super(x, y, size, 1, c);
+    if (c == yellow) {
     PVector aim = new PVector (mouseX - myplayer.x, mouseY - myplayer.y);
     aim.setMag(10);
     vx = aim.x;
     vy = aim.y;  
+  }
+    if (c == pink) {
+      PVector aim = new PVector (myplayer.x - x, myplayer.y - y);
+      aim.setMag(10);
+      vx = aim.x;
+      vy = aim.y;  
+    }
   }
   
   void act() {
@@ -16,13 +24,14 @@ class Bullet extends Gameobject {
     int i = 0;
     while (i < objects.size()) {
       Gameobject obj = objects.get(i);
-      if (obj instanceof Obstacle) {
-        if (dist(obj.x, obj.y, x, y) < obj.size/2 + size/2) {
+      if (obj instanceof Obstacle && touching(obj)) {
           PVector bounce = new PVector(x- obj.x, y - obj.y);
           bounce.setMag(10);
           vx = bounce.x;
           vy = bounce.y;
-        }
+      }
+      if (obj instanceof Enemy && touching(obj) && myColor == yellow){
+          obj.hp--;
       }
       i++;
     }

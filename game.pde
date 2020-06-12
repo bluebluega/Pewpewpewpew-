@@ -12,6 +12,11 @@ void game() {
     i++;
     }
   }
+
+//spawn code
+  if (frameCount % 60 == 0) {//aka modulus
+  objects.add(new Enemy());
+  }
 }
 
 void gameClicks() {
